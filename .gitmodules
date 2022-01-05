@@ -1,0 +1,9 @@
+[submodule "dependencies/BabyDI"]
+	path = dependencies/BabyDI
+	url = http://github.com/simply-jos/BabyDI
+[submodule "dependencies/bzip2"]
+	path = dependencies/bzip2
+	url = git://sourceware.org/git/bzip2.git
+[submodule "dependencies/zlib"]
+	path = dependencies/zlib
+	url = https://github.com/madler/zlib.git
