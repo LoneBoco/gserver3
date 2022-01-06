@@ -1,8 +1,8 @@
 #pragma once
 
-import graal.programsettings;
+//import graal.programsettings;
 
-import "BabyDI.hpp";
+#include "BabyDI.hpp"
 
 //#include "client/game/Game.h"
 //#include "client/network/DownloadManager.h"

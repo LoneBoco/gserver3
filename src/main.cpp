@@ -1,20 +1,41 @@
+#pragma warning (push)
+#pragma warning (disable: 4005)
+#pragma warning (disable: 5104)
+
 #include "BabyDI.Configuration.h"
 
 import graal.core;
+import graal.packet;
+import graal.programsettings;
 
 //import "common.h";
 
 import <iostream>;
 import <algorithm>;
+import <csignal>;
+
+#include <boost/stacktrace.hpp>
+
+
+void crash_handler(int signum)
+{
+	::signal(signum, SIG_DFL);
+	boost::stacktrace::safe_dump_to("./backtrace.dump");
+	::raise(SIGABRT);
+}
 
 
 int main(int argc, char* argv[])
 {
+	::signal(SIGSEGV, &crash_handler);
+	::signal(SIGABRT, &crash_handler);
+
 	// Load all settings first.
-	PROVIDE(graal::settings::ProgramSettings, new graal::settings::ProgramSettings());
+	auto s = new graal::settings::ProgramSettings();
+	PROVIDE(graal::settings::ProgramSettings, s);
 	auto settings = BabyDI::Get<graal::settings::ProgramSettings>();
-	settings->LoadFromFile("settings.ini");
-	settings->LoadFromCommandLine(argc, argv);
+	//settings->LoadFromFile("settings.ini");
+	//settings->LoadFromCommandLine(argc, argv);
 
 	// Configure our various managers.
 	try
@@ -27,6 +48,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	graal::packet::PacketData data;
+	data << graal::packet::GRAALBYTE<3>(123456);
+
 	// Initialize the Game.
 	//auto game = BabyDI::Get<tdrp::Game>();
 	//game->Initialize();
@@ -37,3 +61,5 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+
+#pragma warning (pop)

@@ -15,6 +15,8 @@ module;
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "ole32.lib")
+
+#pragma warning (push)
 #pragma warning (disable: 4996)
 #pragma warning (disable: 4005)
 #endif
@@ -251,4 +253,5 @@ void FileWatch::Update()
 
 } // end namespace graal::fs::watch
 
+#pragma warning (pop)
 #endif // GRAAL_WINDOWS
