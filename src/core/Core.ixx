@@ -4,6 +4,7 @@ export import :flags;
 export import :base64;
 export import :concepts;
 export import :props;
+export import :random;
 //export import graal.core.events;
 
 //export import graal.core.props;
