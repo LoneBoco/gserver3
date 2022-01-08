@@ -27,6 +27,8 @@ void crash_handler(int signum)
 
 int main(int argc, char* argv[])
 {
+	using namespace graal;
+
 	::signal(SIGSEGV, &crash_handler);
 	::signal(SIGABRT, &crash_handler);
 
@@ -48,8 +50,8 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	graal::packet::PacketData data;
-	data << graal::packet::GRAALBYTE<3>(123456);
+	packet::PacketData data;
+	data << packet::WriteGraalByte<3>(123456) << packet::WriteGraalByte<2>(10101);
 
 	// Initialize the Game.
 	//auto game = BabyDI::Get<tdrp::Game>();

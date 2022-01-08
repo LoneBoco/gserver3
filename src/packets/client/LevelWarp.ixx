@@ -26,9 +26,9 @@ public:
 	operator packet::PacketData() const override
 	{
 		packet::PacketData result;
-		result << packet::WRITEGRAAL<5>(static_cast<uint64_t>(ModificationTime.time_since_epoch().count()))
-			<< packet::WRITEGRAAL<1>(static_cast<uint64_t>(X * 2))
-			<< packet::WRITEGRAAL<1>(static_cast<uint64_t>(Y * 2))
+		result << packet::WriteGraalByte<5>(static_cast<uint64_t>(ModificationTime.time_since_epoch().count()))
+			<< packet::WriteGraalByte<1>(static_cast<uint64_t>(X * 2))
+			<< packet::WriteGraalByte<1>(static_cast<uint64_t>(Y * 2))
 			<< Level;
 		return result;
 	}

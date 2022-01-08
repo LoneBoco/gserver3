@@ -9,14 +9,14 @@ export namespace graal::packet
 {
 
 template <std::size_t N>
-constexpr std::array<uint8_t, N> WRITEGRAAL(uint64_t data)
+constexpr std::array<uint8_t, N> WriteGraalByte(uint64_t data)
 {
 	if constexpr (N == 1) data = std::min(data, 223ull);
 	if constexpr (N == 2) data = std::min(data, 28767ull);
 	if constexpr (N == 3) data = std::min(data, 3682399ull);
 	if constexpr (N == 4) data = std::min(data, 471347295ull);
 	if constexpr (N == 5) data = std::min(data, 0xFFFFFFFFull);
-	static_assert(N > 0 && N <= 5, "WRITEGRAAL only supports 1-5 bytes of data.");
+	static_assert(N > 0 && N <= 5, "WriteGraalByte only supports 1-5 bytes of data.");
 
 	std::array<uint8_t, N> result;
 	for (int i = 0; i < N - 1; ++i)
@@ -37,9 +37,9 @@ constexpr std::array<uint8_t, N> WRITEGRAAL(uint64_t data)
 }
 
 template <std::size_t N>
-constexpr std::array<uint8_t, N> WRITE(uint64_t data)
+constexpr std::array<uint8_t, N> WriteByte(uint64_t data)
 {
-	static_assert(N > 0 && N <= 5, "WRITE only supports 1-5 bytes of data.");
+	static_assert(N > 0 && N <= 5, "WriteByte only supports 1-5 bytes of data.");
 
 	std::array<uint8_t, N> result;
 	for (int i = 0; i < N; ++i)
@@ -51,24 +51,44 @@ constexpr std::array<uint8_t, N> WRITE(uint64_t data)
 	return result;
 }
 
+template <std::size_t N>
+constexpr std::vector<uint8_t> WriteClassicString(const std::string& data)
+{
+	auto len = WriteGraalByte<N>(std::ranges::size(data));
+	
+	std::vector<uint8_t> result{ std::begin(len), std::end(len) };
+	result.insert(std::end(result), std::begin(data), std::end(data));
+	return result;
+}
+
+template <std::size_t N>
+constexpr std::vector<uint8_t> WriteString(const std::string& data)
+{
+	auto len = WriteByte<N>(std::ranges::size(data));
+
+	std::vector<uint8_t> result{ std::begin(len), std::end(len) };
+	result.insert(std::end(result), std::begin(data), std::end(data));
+	return result;
+}
+
 
 template <const std::size_t N, std::integral T>
-struct READGRAAL_t
+struct ReadGraalByte_t
 {
 private:
 	T& output;
 
 public:
-	READGRAAL_t() = delete;
-	constexpr READGRAAL_t(T& out) : output(out)
+	ReadGraalByte_t() = delete;
+	constexpr ReadGraalByte_t(T& out) : output(out)
 	{
-		static_assert(sizeof(out) >= N, "READGRAAL output is not large enough.");
+		static_assert(sizeof(out) >= N, "ReadGraalByte output is not large enough.");
 	}
 
 	template <std::size_t N>
 	constexpr std::ranges::view auto operator()(std::ranges::view auto&& r) const
 	{
-		//static_assert(std::ranges::size(r) >= N, "READGRAAL input not big enough.");
+		//static_assert(std::ranges::size(r) >= N, "ReadGraalByte input not big enough.");
 
 		output = 0;
 		auto b = std::begin(r);
@@ -95,24 +115,30 @@ public:
 	}
 };
 
+template <std::size_t N>
+constexpr auto ReadGraalByte(auto& out)
+{
+	return ReadGraalByte_t<N, std::remove_reference<decltype(out)>::type>(out);
+}
+
 
 template <const std::size_t N, std::integral T>
-struct READ_t
+struct ReadByte_t
 {
 private:
 	T& output;
 
 public:
-	READ_t() = delete;
-	constexpr READ_t(T& out) : output(out)
+	ReadByte_t() = delete;
+	constexpr ReadByte_t(T& out) : output(out)
 	{
-		static_assert(sizeof(out) >= N, "READ output is not large enough.");
+		static_assert(sizeof(out) >= N, "ReadByte output is not large enough.");
 	}
 
 	template <std::size_t N>
 	constexpr std::ranges::view auto operator()(std::ranges::view auto&& r) const
 	{
-		//static_assert(std::ranges::size(r) >= N, "READ input not big enough.");
+		//static_assert(std::ranges::size(r) >= N, "ReadByte input not big enough.");
 
 		output = 0;
 		auto b = std::begin(r);
@@ -133,47 +159,183 @@ public:
 	}
 };
 
-
 template <std::size_t N>
-constexpr auto READGRAAL(auto& out)
+constexpr auto ReadByte(auto& out)
 {
-	return READGRAAL_t<N, std::remove_reference<decltype(out)>::type>(out);
+	return ReadByte_t<N, std::remove_reference<decltype(out)>::type>(out);
 }
 
 
-template <std::size_t N>
-constexpr auto READ(auto& out)
+template <const std::size_t N>
+struct ReadClassicString_t
 {
-	return READ_t<N, std::remove_reference<decltype(out)>::type>(out);
+private:
+	std::string& output;
+
+public:
+	ReadClassicString_t() = delete;
+	constexpr ReadClassicString_t(std::string& out) : output(out)
+	{}
+
+	template <std::size_t N>
+	constexpr std::ranges::view auto operator()(std::ranges::view auto&& r) const
+	{
+		//static_assert(std::ranges::size(r) >= N, "READ input not big enough.");
+
+		if constexpr (N == 0)
+		{
+			auto b = std::begin(r);
+			auto e = std::end(r);
+
+			output.clear();
+			output.insert(std::begin(output), b, e);
+			return e;
+		}
+		else
+		{
+			uint64_t string_length;
+
+			auto reader = ReadGraalByte<N>(string_length);
+			auto new_range = reader.operator()<N>(std::forward<decltype(r)>(r));
+
+			auto b = std::begin(new_range);
+			auto e = std::next(b, string_length);
+
+			output.clear();
+			output.insert(std::begin(output), b, e);
+
+			return new_range | std::views::drop(string_length);
+		}
+	}
+};
+
+template <std::size_t N>
+constexpr auto ReadClassicString(std::string& out)
+{
+	return ReadClassicString_t<N>(out);
 }
+
+
+template <const std::size_t N>
+struct ReadString_t
+{
+private:
+	std::string& output;
+
+public:
+	ReadString_t() = delete;
+	constexpr ReadString_t(std::string& out) : output(out)
+	{}
+
+	template <std::size_t N>
+	constexpr std::ranges::view auto operator()(std::ranges::view auto&& r) const
+	{
+		//static_assert(std::ranges::size(r) >= N, "READ input not big enough.");
+
+		if constexpr (N == 0)
+		{
+			auto b = std::begin(r);
+			auto e = std::end(r);
+
+			output.clear();
+			output.insert(std::begin(output), b, e);
+			return e;
+		}
+		else
+		{
+			uint64_t string_length;
+
+			auto reader = ReadByte<N>(string_length);
+			auto new_range = reader.operator() < N > (std::forward<decltype(r)>(r));
+
+			auto b = std::begin(new_range);
+			auto e = std::next(b, string_length);
+
+			output.clear();
+			output.insert(std::begin(output), b, e);
+
+			return new_range | std::views::drop(string_length);
+		}
+	}
+};
+
+template <std::size_t N>
+constexpr auto ReadString(std::string& out)
+{
+	return ReadString_t<N>(out);
+}
+
+
+constexpr auto ReadRawString(std::string& out)
+{
+	return ReadString_t<0>(out);
+}
+
 
 } // end namespace graal::packet
 
 
 
 export template <std::size_t N, std::integral T>
-constexpr auto operator >> (std::ranges::range auto&& r, const graal::packet::READGRAAL_t<N, T>& out)
+constexpr auto operator>> (std::ranges::range auto&& r, const graal::packet::ReadGraalByte_t<N, T>& out)
 {
 	return out.operator()<N>(std::views::all(r));
 }
 
 export template <std::size_t N, std::integral T>
-constexpr auto operator >> (std::ranges::view auto&& r, const graal::packet::READGRAAL_t<N, T>& out)
+constexpr auto operator>> (std::ranges::view auto&& r, const graal::packet::ReadGraalByte_t<N, T>& out)
 {
 	return out.operator()<N>(std::forward<decltype(r)>(r));
 }
 
 
+
 export template <std::size_t N, std::integral T>
-constexpr auto operator >> (std::ranges::range auto&& r, const graal::packet::READ_t<N, T>& out)
+constexpr auto operator>> (std::ranges::range auto&& r, const graal::packet::ReadByte_t<N, T>& out)
 {
 	return out.operator()<N>(std::views::all(r));
 }
 
 export template <std::size_t N, std::integral T>
-constexpr auto operator >> (std::ranges::view auto&& r, const graal::packet::READ_t<N, T>& out)
+constexpr auto operator>> (std::ranges::view auto&& r, const graal::packet::ReadByte_t<N, T>& out)
 {
 	return out.operator()<N>(std::forward<decltype(r)>(r));
+}
+
+
+export template <std::size_t N>
+constexpr auto operator>> (std::ranges::range auto&& r, const graal::packet::ReadClassicString_t<N>& out)
+{
+	return out.operator()<N>(std::views::all(r));
+}
+
+export template <std::size_t N>
+constexpr auto operator>> (std::ranges::view auto&& r, const graal::packet::ReadClassicString_t<N>& out)
+{
+	return out.operator()<N>(std::forward<decltype(r)>(r));
+}
+
+
+export template <std::size_t N>
+constexpr auto operator>> (std::ranges::range auto&& r, const graal::packet::ReadString_t<N>& out)
+{
+	return out.operator()<N>(std::views::all(r));
+}
+
+export template <std::size_t N>
+constexpr auto operator>> (std::ranges::view auto&& r, const graal::packet::ReadString_t<N>& out)
+{
+	return out.operator()<N>(std::forward<decltype(r)>(r));
+}
+
+
+
+export
+constexpr auto operator>> (std::ranges::view auto&& r, std::string& out)
+{
+	out.clear();
+	out.insert(std::begin(out), std::begin(r), std::end(r));
+	return std::end(r);
 }
 
 
@@ -196,7 +358,7 @@ PacketData& operator<<(PacketData& lhs, const uint8_t& rhs)
 }
 
 export template <typename T>
-	requires std::forward_iterator<typename T::const_iterator>
+	//requires std::forward_iterator<typename T::const_iterator>
 		//&& has_empty_function<T>
 PacketData& operator<<(PacketData& lhs, const T& rhs)
 {

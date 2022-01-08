@@ -3,7 +3,7 @@ export import :utilities;
 
 //export import graal.packet.types;
 
-import graal.core;
+//import graal.core;
 
 import "common.h";
 import <array>;
@@ -13,6 +13,9 @@ export namespace graal::packet
 {
 
 using PacketData = std::vector<uint8_t>;
+using PacketDataCIter = PacketData::const_iterator;
+using PacketDataIter = PacketData::iterator;
+using PacketIterRange = std::pair<PacketDataCIter, PacketDataCIter>;
 
 struct Packet
 {
