@@ -37,8 +37,8 @@ int main(int argc, char* argv[])
 	auto s = new graal::settings::ProgramSettings();
 	PROVIDE(graal::settings::ProgramSettings, s);
 	auto settings = BabyDI::Get<graal::settings::ProgramSettings>();
-	//settings->LoadFromFile("settings.ini");
-	//settings->LoadFromCommandLine(argc, argv);
+	settings->LoadFromFile("settings.ini");
+	settings->LoadFromCommandLine(argc, argv);
 
 	// Configure our various managers.
 	try

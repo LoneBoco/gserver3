@@ -81,45 +81,27 @@ public:
 		namespace po = boost::program_options;
 		po::options_description desc;
 		desc.add_options()
-			("package", po::value<std::string>()->implicit_value("login"), "game package")
-			("host", po::value<uint16_t>()->implicit_value(13131), "host on port")
-			("connect", po::value<std::vector<std::string>>()->multitoken(), "connect to server on port")
+			("server", po::value<std::string>()->implicit_value("default"), "server folder to use")
+			("host", po::value<std::string>()->implicit_value("localhost"), "hostname or IP address to bind to")
+			("port", po::value<uint16_t>()->implicit_value(13131), "port to listen on")
+			("broadcasthost", po::value<std::string>(), "public IP to broadcast to the list server")
 			;
 
 		po::variables_map vm;
 		po::store(po::command_line_parser(argc, argv).options(desc).allow_unregistered().run(), vm);
 		po::notify(vm);
 
-		if (vm.count("package"))
-		{
-			Set("game.package", vm["package"].as<std::string>());
-		}
+		if (vm.count("server"))
+			Set("global.server", vm["server"].as<std::string>());
 
 		if (vm.count("host"))
-		{
-			Set("game.starthosting", true);
-			Set("server.peers", 32);
-			Set("network.port", vm["host"].as<uint16_t>());
-		}
+			Set("global.host", vm["host"].as<std::string>());
 
-		if (vm.count("connect"))
-		{
-			auto connect_opts = vm["connect"].as<std::vector<std::string>>();
-			if (!connect_opts.empty())
-			{
-				std::string server = connect_opts.at(0);
-				uint16_t port = 13131;
+		if (vm.count("port"))
+			Set("global.port", vm["host"].as<uint16_t>());
 
-				if (connect_opts.size() == 2)
-				{
-					std::istringstream ss(connect_opts.at(1));
-					ss >> port;
-				}
-
-				Set("network.server", server);
-				Set("network.port", port);
-			}
-		}
+		if (vm.count("broadcasthost"))
+			Set("globa.broadcasthost", vm["broadcasthost"].as<std::string>());
 
 		return true;
 	}
