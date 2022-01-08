@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
 	::signal(SIGABRT, &crash_handler);
 
 	// Load all settings first.
+	core::Log::Print(":: Loading settings.");
 	auto s = new graal::settings::ProgramSettings();
 	PROVIDE(graal::settings::ProgramSettings, s);
 	auto settings = BabyDI::Get<graal::settings::ProgramSettings>();

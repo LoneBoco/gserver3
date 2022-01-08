@@ -162,6 +162,9 @@ public:
 
 		std::string result;
 		std::getline(*m_stream, result);
+		if (result.empty())
+			return result;
+
 		if (*result.crbegin() == '\r')
 			result.pop_back();
 
