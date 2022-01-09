@@ -1,7 +1,7 @@
 export module graal.core:flags;
 
 
-export namespace graal::core
+export namespace graal
 {
 
 template <typename T, typename Flag>
@@ -34,4 +34,4 @@ constexpr void UNSETFLAG(T& source, const Flag& flag)
 	source &= ~static_cast<T>(flag);
 }
 
-} // end namespace graal::core
+} // end namespace graal

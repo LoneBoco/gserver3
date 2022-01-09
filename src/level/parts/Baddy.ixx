@@ -27,27 +27,27 @@ enum class BaddyProp
 
 struct Baddy
 {
-	core::ObjectProperties Properties = {
-		  { ENUMID(BaddyProp::ID), core::PropertyType::UNSIGNED, core::props::in::GraalByte1, core::props::out::GraalByte1 }
-		, { ENUMID(BaddyProp::X), core::PropertyType::FLOAT, core::props::in::FloatPosition, core::props::out::FloatPosition }
-		, { ENUMID(BaddyProp::Y), core::PropertyType::FLOAT, core::props::in::FloatPosition, core::props::out::FloatPosition }
-		, { ENUMID(BaddyProp::TYPE), core::PropertyType::FLOAT, core::props::in::GraalByte1, core::props::out::GraalByte1 }
-		, { ENUMID(BaddyProp::POWERIMAGE), { core::PropertyType::FLOAT, core::PropertyType::STRING },
-				[](const packet::PacketData& data, core::Property& prop) -> std::size_t { return 0; },
-				[](const core::PropertyGroup& prop) -> packet::PacketData {
+	ObjectProperties Properties = {
+		  { ENUMID(BaddyProp::ID), PropertyType::UNSIGNED, props::in::GraalByte1, props::out::GraalByte1 }
+		, { ENUMID(BaddyProp::X), PropertyType::FLOAT, props::in::FloatPosition, props::out::FloatPosition }
+		, { ENUMID(BaddyProp::Y), PropertyType::FLOAT, props::in::FloatPosition, props::out::FloatPosition }
+		, { ENUMID(BaddyProp::TYPE), PropertyType::FLOAT, props::in::GraalByte1, props::out::GraalByte1 }
+		, { ENUMID(BaddyProp::POWERIMAGE), { PropertyType::FLOAT, PropertyType::STRING },
+				[](const packet::PacketData& data, Property& prop) -> std::size_t { return 0; },
+				[](const PropertyGroup& prop) -> packet::PacketData {
 					packet::PacketData result;
-					result << core::props::out::GraalByte<1>(prop[0]) << core::props::out::ClassicString<1>(prop[1]);
+					result << props::out::GraalByte<1>(prop[0]) << props::out::ClassicString<1>(prop[1]);
 					//result << packet::WriteGraalByte<1>(prop[0].GetUnsigned()) << packet::WriteClassicString<1>(prop[1].GetString());
 					return result;
 				}
 			}
-		, { ENUMID(BaddyProp::MODE), core::PropertyType::UNSIGNED, core::props::in::GraalByte1, core::props::out::GraalByte1 }
-		, { ENUMID(BaddyProp::ANI), core::PropertyType::UNSIGNED, core::props::in::GraalByte1, core::props::out::GraalByte1 }
-		, { ENUMID(BaddyProp::DIR), core::PropertyType::UNSIGNED, core::props::in::GraalByte1, core::props::out::GraalByte1 }
-		, { ENUMID(BaddyProp::MODE), core::PropertyType::UNSIGNED, core::props::in::GraalByte1, core::props::out::GraalByte1 }
-		, { ENUMID(BaddyProp::VERSESIGHT), core::PropertyType::STRING, core::props::in::ClassicString1, core::props::out::ClassicString1 }
-		, { ENUMID(BaddyProp::VERSEHURT), core::PropertyType::STRING, core::props::in::ClassicString1, core::props::out::ClassicString1 }
-		, { ENUMID(BaddyProp::VERSEATTACK), core::PropertyType::STRING, core::props::in::ClassicString1, core::props::out::ClassicString1 }
+		, { ENUMID(BaddyProp::MODE), PropertyType::UNSIGNED, props::in::GraalByte1, props::out::GraalByte1 }
+		, { ENUMID(BaddyProp::ANI), PropertyType::UNSIGNED, props::in::GraalByte1, props::out::GraalByte1 }
+		, { ENUMID(BaddyProp::DIR), PropertyType::UNSIGNED, props::in::GraalByte1, props::out::GraalByte1 }
+		, { ENUMID(BaddyProp::MODE), PropertyType::UNSIGNED, props::in::GraalByte1, props::out::GraalByte1 }
+		, { ENUMID(BaddyProp::VERSESIGHT), PropertyType::STRING, props::in::ClassicString1, props::out::ClassicString1 }
+		, { ENUMID(BaddyProp::VERSEHURT), PropertyType::STRING, props::in::ClassicString1, props::out::ClassicString1 }
+		, { ENUMID(BaddyProp::VERSEATTACK), PropertyType::STRING, props::in::ClassicString1, props::out::ClassicString1 }
 	};
 
 	bool CanRespawn = true;

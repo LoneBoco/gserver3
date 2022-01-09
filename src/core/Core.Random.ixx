@@ -3,7 +3,7 @@ export module graal.core:random;
 import <random>;
 
 
-export namespace graal::core
+export namespace graal
 {
 
 class Random
@@ -64,11 +64,11 @@ private:
 	static inline bool m_seeded = false;
 };
 
-} // end namespace graal::core
+} // end namespace graal
 
-namespace graal::core
+namespace graal
 {
 
 std::default_random_engine Random::m_engine;
 
-}
+} // end namespace graal

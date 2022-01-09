@@ -17,7 +17,7 @@ concept GeneratesPropList = requires(T a) {
 */
 
 
-export namespace graal::core
+export namespace graal
 {
 
 enum class PropertyType
@@ -614,10 +614,10 @@ public:
 	};
 };
 
-} // end namespace graal::core
+} // end namespace graal
 
 
-export namespace graal::core::props::in
+export namespace graal::props::in
 {
 
 template <std::size_t N>
@@ -731,9 +731,9 @@ std::size_t FloatPosition(const packet::PacketData& d, Property& p)
 	return 1;
 }
 
-} // end namespace graal::core::props::in
+} // end namespace graal::props::in
 
-export namespace graal::core::props::out
+export namespace graal::props::out
 {
 
 template <std::size_t N>
@@ -810,4 +810,4 @@ packet::PacketData FloatPosition(const PropertyGroup& p)
 	return result;
 }
 
-} // end namespace graal::core::props::out
+} // end namespace graal::props::out

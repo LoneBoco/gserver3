@@ -13,7 +13,7 @@ import <boost/archive/iterators/insert_linebreaks.hpp>;
 import <boost/archive/iterators/transform_width.hpp>;
 
 
-namespace graal::core::base64
+namespace graal::base64
 {
 
 static const std::string base64_chars =
@@ -29,7 +29,7 @@ bool is_base64(uint8_t c)
 }
 
 
-export namespace graal::core::base64
+export namespace graal::base64
 {
 
 std::vector<uint8_t> from(const std::string& input)
@@ -84,4 +84,4 @@ std::string to(const T& input)
 	return result;
 }
 
-} // end namespace graal::core::base64
+} // end namespace graal::base64

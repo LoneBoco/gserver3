@@ -10,7 +10,7 @@ export namespace graal::level
 
 struct Horse
 {
-	core::Position2df Position;
+	Position2df Position;
 	int8_t Direction;
 	uint8_t Bushes;
 	std::string Image;

@@ -3,7 +3,7 @@ export module graal.core:position;
 import "common.h";
 
 
-export namespace graal::core
+export namespace graal
 {
 
 template <typename T>
@@ -70,4 +70,4 @@ using Position2df = Position2D<float>;
 using Size2di = Size2D<int>;
 using Size2df = Size2D<float>;
 
-} // end namespace graal::core
+} // end namespace graal

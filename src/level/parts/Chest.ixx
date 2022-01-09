@@ -10,7 +10,7 @@ export namespace graal::level
 
 struct Chest
 {
-	core::Position2di Position;
+	Position2di Position;
 	uint8_t Item;
 	uint8_t Sign;
 };

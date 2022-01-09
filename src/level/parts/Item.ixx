@@ -10,7 +10,7 @@ export namespace graal::level
 
 struct Item
 {
-	core::Position2df Position;
+	Position2df Position;
 	int8_t Item;
 	chrono::time_point LastUpdated;
 	// timeout

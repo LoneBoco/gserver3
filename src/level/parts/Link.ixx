@@ -10,8 +10,8 @@ export namespace graal::level
 
 struct Link
 {
-	core::Position2di Position;
-	core::Size2Di Size;
+	Position2di Position;
+	Size2Di Size;
 	std::string DestinationLevel;
 	std::string DestinationX;
 	std::string DestinationY;

@@ -10,8 +10,8 @@ export namespace graal::level
 
 struct BoardChange
 {
-	core::Position2di Position;
-	core::Size2Di Size;
+	Position2di Position;
+	Size2Di Size;
 	chrono::time_point LastUpdated;
 	// tiles
 };

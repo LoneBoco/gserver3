@@ -7,7 +7,7 @@ import <iostream>;
 import <filesystem>;
 //
 
-export namespace graal::core
+export namespace graal
 {
 
 class Log
@@ -55,9 +55,9 @@ private:
 	static std::ofstream m_file;
 };
 
-} // end namespace graal::core
+} // end namespace graal
 
-namespace graal::core
+namespace graal
 {
 
 std::ofstream Log::m_file;

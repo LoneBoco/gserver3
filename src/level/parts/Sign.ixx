@@ -10,7 +10,7 @@ export namespace graal::level
 
 struct Sign
 {
-	core::Position2di Position;
+	Position2di Position;
 	std::string Text;
 };
 
