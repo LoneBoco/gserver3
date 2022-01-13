@@ -6,9 +6,8 @@ export import :concepts;
 export import :props;
 export import :random;
 export import :log;
-//export import graal.core.events;
+export import graal.core.events;
 
-//export import graal.core.props;
 
 export namespace graal
 {
