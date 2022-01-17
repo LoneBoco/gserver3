@@ -8,6 +8,8 @@ export import :random;
 export import :log;
 export import graal.core.events;
 
+import <cstdint>;
+
 
 export namespace graal
 {

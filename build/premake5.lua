@@ -31,7 +31,7 @@ workspace "graal"
 	-- Toolset specific
 	filter "toolset:msc*"
 		defines { "_CRT_SECURE_NO_WARNINGS" }
-		disablewarnings { "5105" }
+		disablewarnings { "4005", "5105" }
 		buildoptions {
 			"/guard:cf",	-- Control Flow Guard
 			"/Qspectre",	-- Spectre Mitigation
