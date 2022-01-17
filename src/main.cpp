@@ -14,6 +14,7 @@ import <iostream>;
 import <algorithm>;
 import <csignal>;
 
+
 #include <boost/stacktrace.hpp>
 
 
@@ -33,7 +34,7 @@ int main(int argc, char* argv[])
 	::signal(SIGABRT, &crash_handler);
 
 	// Load all settings first.
-	Log::Print(":: Loading settings.");
+	Log::PrintLine(":: Loading settings.");
 	auto s = new graal::settings::ProgramSettings();
 	PROVIDE(graal::settings::ProgramSettings, s);
 	auto settings = BabyDI::Get<graal::settings::ProgramSettings>();
