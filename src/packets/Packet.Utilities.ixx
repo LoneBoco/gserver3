@@ -106,7 +106,8 @@ public:
 			auto val = *b;
 			output += val;
 			output <<= 7;
-			b = std::next(b);
+			++b;
+			//b = std::next(b);
 		}
 
 		assert(b != e);
@@ -156,7 +157,8 @@ public:
 			auto val = *b;
 			output += val;
 			output <<= 8;
-			b = std::next(b);
+			++b;
+			//b = std::next(b);
 		}
 
 		assert(b != e);
@@ -206,7 +208,8 @@ public:
 			auto new_range = reader.operator()<N>(std::forward<decltype(r)>(r));
 
 			auto b = std::begin(new_range);
-			auto e = std::next(b, string_length);
+			//auto e = std::next(b, string_length);
+			auto e = b += string_length;
 
 			output.clear();
 			output.insert(std::begin(output), b, e);
@@ -256,7 +259,8 @@ public:
 			auto new_range = reader.operator() < N > (std::forward<decltype(r)>(r));
 
 			auto b = std::begin(new_range);
-			auto e = std::next(b, string_length);
+			//auto e = std::next(b, string_length);
+			auto e = b += string_length;
 
 			output.clear();
 			output.insert(std::begin(output), b, e);
