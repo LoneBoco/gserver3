@@ -2,20 +2,19 @@
 #pragma warning (disable: 4005)
 #pragma warning (disable: 5104)
 
+#include "common.h"
 #include "BabyDI.Configuration.h"
+
+#include <csignal>
+#include <boost/stacktrace.hpp>
 
 import graal.core;
 import graal.packet;
 import graal.programsettings;
+import graal.server;
 
-//import "common.h";
-
-import <iostream>;
-import <algorithm>;
-import <csignal>;
-
-
-#include <boost/stacktrace.hpp>
+//import std.core;
+//import "BabyDI.hpp";
 
 
 void crash_handler(int signum)
@@ -33,11 +32,12 @@ int main(int argc, char* argv[])
 	::signal(SIGSEGV, &crash_handler);
 	::signal(SIGABRT, &crash_handler);
 
-	// Load all settings first.
+	// Provide settings first before we construct anything else.
+	auto settings = new graal::settings::ProgramSettings();
+	PROVIDE(graal::settings::ProgramSettings, settings);
+
+	// Load all settings.
 	Log::PrintLine(":: Loading settings.");
-	auto s = new graal::settings::ProgramSettings();
-	PROVIDE(graal::settings::ProgramSettings, s);
-	auto settings = BabyDI::Get<graal::settings::ProgramSettings>();
 	settings->LoadFromFile("settings.ini");
 	settings->LoadFromCommandLine(argc, argv);
 
@@ -52,16 +52,13 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	packet::PacketData data;
-	data << packet::WriteGraalByte<3>(123456) << packet::WriteGraalByte<2>(10101);
+	// Load server.
+	PROVIDE(graal::server::Server, new graal::server::Server());
+	auto server = BabyDI::Get<graal::server::Server>();
+	server->LoadConfiguration();
 
-	// Initialize the Game.
-	//auto game = BabyDI::Get<tdrp::Game>();
-	//game->Initialize();
+	// Wait until the server ends.
 
-	// Pull out the injected window and start the event loop.
-	//auto window = BabyDI::Get<tdrp::render::Window>();
-	//window->EventLoop();
 
 	return 0;
 }
