@@ -1,4 +1,6 @@
-workspace "graal"
+workspace "gserver3"
+	startproject "gserver3"
+
 	configurations { "Debug", "Release" }
 	platforms { "x32", "x64" }
 	symbols "On"
@@ -31,11 +33,15 @@ workspace "graal"
 	-- Toolset specific
 	filter "toolset:msc*"
 		defines { "_CRT_SECURE_NO_WARNINGS" }
-		disablewarnings { "4005", "5105" }
+		disablewarnings { "4005", "5050", "5104", "5105" }
 		buildoptions {
 			"/guard:cf",	-- Control Flow Guard
 			"/Qspectre",	-- Spectre Mitigation
 			"/Zc:preprocessor",	-- Use alternative preprocessor (like GCC/clang, required for BabyDI)
+
+			-- Enables 'import std;'
+			-- "/experimental:module",
+			-- "/stdIfcDir \"$(VC_IFCPath)\"",
 		}
 	--[[
 	filter "toolset:clang*"
@@ -45,7 +51,7 @@ workspace "graal"
 
 	-- Windows defines.
 	filter "system:windows"
-		defines { "WIN32", "_WIN32", "_WINDOWS" }
+		defines { "WIN32", "_WIN32", "_WINDOWS", "WIN32_LEAN_AND_MEAN", "NOMINMAX" }
 	filter { "system:windows", "platforms:x64" }
 		defines { "WIN64", "_WIN64" }
 
@@ -102,7 +108,7 @@ project "gserver3"
 
 	-- Enable scanning for module dependencies with MSVC.
 	filter "toolset:msc*"
-		flags { "ScanForModuleDependencies" }
+		scanformoduledependencies "on"
 
 	-- Post-build commands.
 	filter {}
@@ -131,6 +137,8 @@ project "bzip2"
 		"../dependencies/bzip2/spewG.c",
 		"../dependencies/bzip2/unzcrash.c",
 	}
+	filter "toolset:msc*"
+		disablewarnings { "4244", "4267", "4996" }
 
 project "zlib"
 	kind "StaticLib"
@@ -140,4 +148,4 @@ project "zlib"
 	files { "../dependencies/zlib/*.h", "../dependencies/zlib/*.c" }
 	includedirs { "../dependencies/zlib/" }
 	filter "toolset:msc*"
-		disablewarnings { "4996" }
+		disablewarnings { "4244", "4267", "4996" }
