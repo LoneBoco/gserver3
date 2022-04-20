@@ -40,15 +40,19 @@ public:
 public:
 
 #pragma region Load and Save
-	bool LoadFromFile(const std::filesystem::path& filename)
+	bool LoadFromFile(const std::string_view& file, const std::string_view& default_category = "Global")
 	{
-		graal::fs::File f{ filename };
+		fs::File f{ file };
+		return LoadFromFile(f, default_category);
+	}
 
-		std::string category{ "Global" };
+	bool LoadFromFile(const fs::File& file, const std::string_view& default_category = "Global")
+	{
+		std::string category{ default_category };
 
-		while (!f.Finished())
+		while (!file.Finished())
 		{
-			std::string line = f.ReadLine();
+			std::string line = file.ReadLine();
 
 			// Erase any carriage returns.
 			line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
@@ -109,7 +113,7 @@ public:
 			Set("global.port", vm["host"].as<uint16_t>());
 
 		if (vm.count("broadcasthost"))
-			Set("globa.broadcasthost", vm["broadcasthost"].as<std::string>());
+			Set("global.broadcasthost", vm["broadcasthost"].as<std::string>());
 
 		return true;
 	}
@@ -176,7 +180,7 @@ public:
 	}
 
 	template <typename T>
-	T GetAs(const std::string& setting, const T def = T()) const
+	T GetAs(const std::string& setting, const T def = T{}) const
 	{
 		std::string lower{ setting };
 		std::transform(lower.begin(), lower.end(), lower.begin(), [](auto ch) { return std::tolower(ch, std::locale("")); });
@@ -202,11 +206,11 @@ public:
 		std::string lowervalue{ i->second };
 		std::transform(lowervalue.begin(), lowervalue.end(), lowervalue.begin(), [](auto ch) { return std::tolower(ch, std::locale("")); });
 
-		if (lower == "on")
+		if (lowervalue == "on")
 			return true;
-		if (lower == "true")
+		if (lowervalue == "true")
 			return true;
-		if (lower == "yes")
+		if (lowervalue == "yes")
 			return true;
 
 		return false;
@@ -245,6 +249,19 @@ public:
 	void Set(const std::string& setting, const bool value)
 	{
 		Set(setting, value ? std::string("true") : std::string("false"));
+	}
+#pragma endregion
+
+#pragma region Delete
+	void EraseCategory(const std::string_view& category)
+	{
+		std::erase_if(m_settings,
+			[category](const auto& p) -> bool
+			{
+				const auto& [k, v] = p;
+				return boost::istarts_with(k, category);
+			}
+		);
 	}
 #pragma endregion
 
