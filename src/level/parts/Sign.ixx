@@ -1,6 +1,8 @@
-export module graal.level.parts:sign;
+module;
 
-import "common.h";
+#include "common.h"
+
+export module graal.level.parts:sign;
 
 import graal.core;
 

@@ -1,6 +1,12 @@
+module;
+
+#include "common.h"
+
+#include <random>
+
 export module graal.core:random;
 
-import <random>;
+//import std.core;
 
 
 export namespace graal

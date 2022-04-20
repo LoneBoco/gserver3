@@ -1,12 +1,22 @@
+module;
+
+#include "common.h"
+
+#include <filesystem>
+#include <fstream>
+#include <sstream>
+
+#include <boost/crc.hpp>
+
 export module graal.file;
 
-import "common.h";
+/*
+import std.core;
+import std.memory;
+import std.filesystem;
 
-import <cassert>;
-import <filesystem>;
-import <fstream>;
-import <sstream>;
 import <boost/crc.hpp>;
+*/
 
 
 // Not exported.

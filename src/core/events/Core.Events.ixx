@@ -1,8 +1,12 @@
+module;
+
+#include "common.h"
+#include <unordered_map>
+
 export module graal.core.events;
 
-import "common.h";
-
-import <unordered_map>;
+//import std.core;
+//import std.memory;
 
 
 export namespace graal

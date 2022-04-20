@@ -1,6 +1,8 @@
-export module graal.level.parts:baddy;
+module;
 
-import "common.h";
+#include "common.h"
+
+export module graal.level.parts:baddy;
 
 import graal.core;
 import graal.packet;

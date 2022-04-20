@@ -1,3 +1,9 @@
+module;
+
+#include "common.h"
+
+#include <unordered_map>
+
 module graal.core.events;
 
 

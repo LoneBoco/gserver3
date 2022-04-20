@@ -1,16 +1,24 @@
 module;
 
+#include "common.h"
+
+#include <filesystem>
+#include <locale>
+#include <sstream>
+
 #include <boost/program_options.hpp>
 
 export module graal.programsettings;
 
 import graal.file;
 
-import "common.h";
+/*
+import std.core;
+import std.memory;
+import std.filesystem;
 
-import <filesystem>;
-import <locale>;
-import <sstream>;
+import <boost/algorithm/string.hpp>;
+*/
 
 
 export namespace graal::settings

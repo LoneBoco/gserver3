@@ -1,6 +1,9 @@
-export module graal.level.parts:horse;
+module;
 
-import "common.h";
+#include "common.h"
+#include "namespace.chrono.h"
+
+export module graal.level.parts:horse;
 
 import graal.core;
 

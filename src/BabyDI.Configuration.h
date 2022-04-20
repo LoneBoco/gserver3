@@ -2,13 +2,16 @@
 
 //import graal.programsettings;
 
-#include "BabyDI.hpp"
+//#include "BabyDI.hpp"
 
 //#include "client/game/Game.h"
 //#include "client/network/DownloadManager.h"
 //#include "client/render/Window.h"
 //#include "engine/filesystem/ProgramSettings.h"
 //#include "engine/resources/Resource.h"
+
+//import graal.server;
+
 
 static void ConfigureBabyDI()
 {
@@ -17,4 +20,5 @@ static void ConfigureBabyDI()
 	//PROVIDE(tdrp::ResourceManager, new tdrp::ResourceManager());
 	//PROVIDE(tdrp::DownloadManager, new tdrp::DownloadManager());
 	//PROVIDE(tdrp::render::Window, new tdrp::render::Window("tdrp"));
+	
 };

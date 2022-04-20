@@ -1,8 +1,16 @@
+module;
+
+#include "common.h"
+
+#include <filesystem>
+
 export module graal.filesystem.watch;
 
-import "common.h";
-
-import <filesystem>;
+/*
+import std.core;
+import std.memory;
+import std.filesystem;
+*/
 
 
 export namespace graal::fs::watch

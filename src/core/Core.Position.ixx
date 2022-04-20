@@ -1,6 +1,10 @@
+module;
+
+#include "common.h"
+
 export module graal.core:position;
 
-import "common.h";
+//import std.core;
 
 
 export namespace graal

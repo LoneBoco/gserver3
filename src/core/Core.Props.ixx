@@ -1,13 +1,24 @@
+module;
+
+#include "common.h"
+
+#include <sstream>
+#include <iterator>
+#include <variant>
+#include <initializer_list>
+
+//#include <cassert>
+
 export module graal.core:props;
 
 import graal.packet;
 
-import "common.h";
+/*
+import std.core;
+import std.memory;
 
-import <sstream>;
-import <iterator>;
-import <variant>;
-import <initializer_list>;
+import <boost/algorithm/string.hpp>;
+*/
 
 /*
 template <class T>

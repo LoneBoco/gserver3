@@ -1,7 +1,18 @@
+module;
+
+#include "common.h"
+#include "namespace.chrono.h"
+
 export module graal.packet.types.client:levelwarp;
 
-import "common.h";
 import graal.packet;
+
+/*
+import std.core;
+import std.memory;
+
+#include "namespace.chrono.h"
+*/
 
 
 export namespace graal::packet::client

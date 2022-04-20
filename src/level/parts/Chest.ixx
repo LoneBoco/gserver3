@@ -1,6 +1,8 @@
-export module graal.level.parts:chest;
+module;
 
-import "common.h";
+#include "common.h"
+
+export module graal.level.parts:chest;
 
 import graal.core;
 

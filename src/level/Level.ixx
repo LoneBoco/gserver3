@@ -1,11 +1,19 @@
 module;
 
+#include "common.h"
+#include "namespace.chrono.h"
+
 export module graal.level;
 export import graal.level.parts;
 
 import graal.core;
 
-import "common.h";
+/*
+import std.core;
+import std.memory;
+
+#include "namespace.chrono.h"
+*/
 
 
 export namespace graal::level
@@ -14,8 +22,8 @@ export namespace graal::level
 class Level
 {
 public:
-	Level();
-	~Level();
+	Level() = default;
+	~Level() = default;
 
 	Level(const Level& other) = delete;
 	Level(Level&& other) = delete;
@@ -24,7 +32,10 @@ public:
 	bool operator==(const Level& other) = delete;
 
 public:
-	bool reload();
+	bool Reload()
+	{
+		return false;
+	}
 
 protected:
 	chrono::time_point m_last_updated;
@@ -45,5 +56,7 @@ protected:
 	// NPC
 	// Player
 };
+
+using LevelPtr = std::shared_ptr<Level>;
 
 } // end namespace graal::level

@@ -1,13 +1,11 @@
 module;
 
 #ifdef GRAAL_WINDOWS
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
 
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
+#include "common.h"
+
+#include <atomic>
+#include <filesystem>
 
 #include <Windows.h>
 
@@ -23,6 +21,9 @@ module;
 #endif
 
 module graal.filesystem.watch;
+
+//import std.core;
+//import std.threading;
 
 
 #ifdef GRAAL_WINDOWS

@@ -1,8 +1,17 @@
+module;
+
+#include "common.h"
+#include "namespace.chrono.h"
+
 export module graal.level.parts:item;
 
-import "common.h";
-
 import graal.core;
+
+/*
+import std.core;
+
+#include "namespace.chrono.h"
+*/
 
 
 export namespace graal::level

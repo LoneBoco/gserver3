@@ -1,7 +1,12 @@
+module;
+
+#include "common.h"
+
 export module graal.packet.types.server:levelboard;
 
-import "common.h";
 import graal.packet;
+
+//import std.core;
 
 
 export namespace graal::packet::server

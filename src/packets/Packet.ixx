@@ -1,12 +1,19 @@
+module;
+
+#include "common.h"
+#include <variant>
+
 export module graal.packet;
 export import :utilities;
+export import :types;
 
-//export import graal.packet.types;
 
 //import graal.core;
 
-import "common.h";
-import <array>;
+/*
+import std.core;
+import std.memory;
+*/
 
 
 export namespace graal::packet

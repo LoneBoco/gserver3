@@ -1,16 +1,28 @@
 module;
 
+#include "common.h"
+
+#include <iterator>
+#include <cctype>
+#include <locale>
+
+#include <boost/algorithm/string.hpp>
+
+#include <boost/archive/iterators/base64_from_binary.hpp>
+#include <boost/archive/iterators/insert_linebreaks.hpp>
+#include <boost/archive/iterators/transform_width.hpp>
+
 export module graal.core:base64;
 
-import "common.h";
+/*
+import std.core;
 
-import <iterator>;
-import <cctype>;
-import <locale>;
+import <boost/algorithm/string.hpp>;
 
 import <boost/archive/iterators/base64_from_binary.hpp>;
 import <boost/archive/iterators/insert_linebreaks.hpp>;
 import <boost/archive/iterators/transform_width.hpp>;
+*/
 
 
 namespace graal::base64

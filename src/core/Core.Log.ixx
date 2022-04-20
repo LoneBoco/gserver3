@@ -1,14 +1,21 @@
-export module graal.core:log;
+module;
+
+#include "common.h"
 
 // Don't change this order.  For some reason the compile will fail.
-import <fstream>;
-import <sstream>;
-import <iostream>;
-import <filesystem>;
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <filesystem>
 //
 
-import <array>;
-import <format>;
+#include <array>
+#include <format>
+
+export module graal.core:log;
+
+//import std.core;
+//import std.filesystem;
 
 
 export namespace graal

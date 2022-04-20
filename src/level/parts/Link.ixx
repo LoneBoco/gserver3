@@ -1,6 +1,8 @@
-export module graal.level.parts:link;
+module;
 
-import "common.h";
+#include "common.h"
+
+export module graal.level.parts:link;
 
 import graal.core;
 

@@ -1,17 +1,26 @@
+module;
+
+#include "common.h"
+
+#include <filesystem>
+#include <list>
+#include <mutex>
+#include <condition_variable>
+#include <future>
+#include <fstream>
+#include <atomic>
+
 export module graal.filesystem;
 
 import graal.filesystem.watch;
 import graal.file;
 
-import "common.h";
-
-import <filesystem>;
-import <list>;
-import <mutex>;
-import <condition_variable>;
-import <future>;
-import <fstream>;
-import <atomic>;
+/*
+import std.core;
+import std.threading;
+import std.memory;
+import std.filesystem;
+*/
 
 
 export namespace graal::fs

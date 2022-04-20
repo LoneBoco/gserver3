@@ -1,8 +1,15 @@
+module;
+
+#include "common.h"
+
 export module graal.packet:utilities;
 
-import "common.h";
-import <array>;
-import <ranges>;
+/*
+import <cassert>;
+
+import std.core;
+import std.memory;
+*/
 
 
 export namespace graal::packet
