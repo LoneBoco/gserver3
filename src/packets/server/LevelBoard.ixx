@@ -12,30 +12,36 @@ import graal.packet;
 export namespace graal::packet::server
 {
 
-	// [UBYTE5 modtime][SBYTE1 x (float)][SBYTE1 y (float)][STRING level]
-	class LevelBoard : protected Packet
+// [UBYTE5 modtime][SBYTE1 x (float)][SBYTE1 y (float)][STRING level]
+class LevelBoard : protected Packet
+{
+public:
+	LevelBoard()
+	{}
+
+	LevelBoard(LevelBoard&& other)
 	{
-	public:
-		LevelBoard()
-		{}
+		// TODO.
+	}
 
-		LevelBoard(const packet::PacketData&& packet)
-		{
-			// TODO.
-		}
+	~LevelBoard() override {}
 
-		~LevelBoard() override {}
+public:
+	std::variant<graal::packet::ClientPacket, graal::packet::ServerPacket> Type() const override
+	{
+		return graal::packet::ServerPacket::LEVELBOARD;
+	}
 
-	public:
-		operator packet::PacketData() const override
-		{
-			packet::PacketData result;
-			// Board changes.
-			return result;
-		}
-
-	public:
+public:
+	operator packet::PacketData() const override
+	{
+		packet::PacketData result;
 		// Board changes.
-	};
+		return result;
+	}
+
+public:
+	// Board changes.
+};
 
 } // end namespace graal::packet::client

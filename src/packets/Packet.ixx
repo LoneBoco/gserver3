@@ -31,13 +31,18 @@ public:
 	virtual ~Packet() {}
 
 	Packet(const Packet& other) = delete;
-	Packet(Packet&& other) = delete;
+	Packet(Packet&& other) = default;
 	Packet& operator=(const Packet& other) = delete;
 	Packet& operator=(Packet&& other) = delete;
 	bool operator==(const Packet& other) = delete;
 
 public:
+	virtual std::variant<graal::packet::ClientPacket, graal::packet::ServerPacket> Type() const = 0;
+
+public:
 	virtual operator PacketData() const = 0;
 };
+
+using PacketPtr = std::unique_ptr<Packet>;
 
 } // end namespace graal::packet

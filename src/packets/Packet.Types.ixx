@@ -1,7 +1,4 @@
-export module graal.packet.types;
-
-export import graal.packet.types.client;
-export import graal.packet.types.server;
+export module graal.packet:types;
 
 
 export namespace graal::packet

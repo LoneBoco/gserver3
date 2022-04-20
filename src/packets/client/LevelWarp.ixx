@@ -26,12 +26,18 @@ public:
 		: ModificationTime(mod), X(x), Y(y), Level(level)
 	{}
 
-	LevelWarp(const packet::PacketData&& packet)
+	LevelWarp(LevelWarp&& other)
+		: ModificationTime(std::move(other.ModificationTime)), X(other.X), Y(other.Y), Level(std::move(other.Level))
 	{
-		// TODO.
 	}
 
 	~LevelWarp() override {}
+
+public:
+	std::variant<graal::packet::ClientPacket, graal::packet::ServerPacket> Type() const override
+	{
+		return graal::packet::ClientPacket::LEVELWARP;
+	}
 
 public:
 	operator packet::PacketData() const override
