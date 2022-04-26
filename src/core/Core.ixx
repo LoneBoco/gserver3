@@ -5,6 +5,7 @@ module;
 export module graal.core;
 
 export import :base64;
+export import :colors;
 export import :concepts;
 export import :flags;
 export import :log;
@@ -12,6 +13,7 @@ export import :position;
 export import :props;
 export import :random;
 export import :ranges;
+export import :utilities;
 export import graal.core.events;
 
 //import std.core;
