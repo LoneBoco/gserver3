@@ -67,11 +67,8 @@ protected:
 		if (ec) return;
 		assert(m_connect_cb != nullptr);
 
-		if (m_connect_cb)
-		{
-			auto endpoint = std::make_unique<NetworkEndpoint>(std::move(socket));
-			m_connect_cb(std::move(endpoint));
-		}
+		auto endpoint = std::make_unique<NetworkEndpoint>(std::move(socket));
+		m_connect_cb(std::move(endpoint));
 	}
 
 protected:

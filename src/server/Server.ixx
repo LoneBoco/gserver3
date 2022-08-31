@@ -27,7 +27,11 @@ export namespace graal::server
 class Server
 {
 public:
-	Server() = default;
+	Server()
+	{
+		Network.BindPlayerConnectCallback(std::bind(&Server::on_player_connect, this, std::placeholders::_1));
+	}
+
 	~Server() = default;
 
 	Server(const Server& other) noexcept = delete;
@@ -58,7 +62,7 @@ public:
 	void Run()
 	{
 		// Update our network.
-		m_network.Run();
+		Network.Run();
 
 		// Do timed events.
 
@@ -215,8 +219,6 @@ protected:
 	}
 
 protected:
-	network::Network m_network;
-
 	std::unordered_map<uint16_t, player::PlayerPtr> m_players;
 	std::set<uint16_t> m_players_to_delete;
 	std::set<uint16_t> m_players_free_ids;

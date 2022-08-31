@@ -14,18 +14,57 @@ export namespace graal::level
 enum class BaddyProp
 {
 	ID = 0,
-	X = 1,
-	Y = 2,
-	TYPE = 3,
-	POWERIMAGE = 4,
-	MODE = 5,
-	ANI = 6,
-	DIR = 7,
-	VERSESIGHT = 8,
-	VERSEHURT = 9,
-	VERSEATTACK = 10,
+	X,
+	Y,
+	TYPE,
+	POWERIMAGE,
+	MODE,
+	ANI,
+	DIR,
+	VERSESIGHT,
+	VERSEHURT,
+	VERSEATTACK,
+
 	COUNT
 };
+
+enum class BaddyMode
+{
+	WALK = 0,
+	LOOK,
+	HUNT,
+	HURT,
+	BUMPED,
+	DIE,
+	SWAMPSHOT,
+	HAREJUMP,
+	OCTOSHOT,
+	DEAD,
+
+	COUNT
+};
+
+struct BaddyData
+{
+	std::string Image;
+	BaddyMode StartMode;
+	uint8_t StartPower;
+};
+
+const int BaddyTypeCount = 10;
+const std::array<BaddyData, BaddyTypeCount> BaddyInfo = {
+	  BaddyData { "baddygray.png",     BaddyMode::WALK, 2 }
+	, BaddyData { "baddyblue.png",     BaddyMode::WALK, 3 }
+	, BaddyData { "baddyred.png",      BaddyMode::WALK, 4 }
+	, BaddyData { "baddyblue.png",     BaddyMode::WALK, 3 }
+	, BaddyData { "baddygray.png",     BaddyMode::SWAMPSHOT, 2 }
+	, BaddyData { "baddyhare.png",     BaddyMode::HAREJUMP, 1 }
+	, BaddyData { "baddyoctopus.png",  BaddyMode::WALK, 1 }
+	, BaddyData { "baddygold.png",     BaddyMode::WALK, 6 }
+	, BaddyData { "baddylizardon.png", BaddyMode::WALK, 12 }
+	, BaddyData { "baddydragon.png",   BaddyMode::WALK, 8 }
+};
+
 
 struct Baddy
 {

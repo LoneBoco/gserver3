@@ -40,6 +40,11 @@ public:
 public:
 
 #pragma region Load and Save
+	bool LoadFromFile(const char* file, const std::string_view& default_category = "Global")
+	{
+		return LoadFromFile(std::string_view{ file }, default_category);
+	}
+
 	bool LoadFromFile(const std::string_view& file, const std::string_view& default_category = "Global")
 	{
 		fs::File f{ file };

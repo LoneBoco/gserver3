@@ -15,6 +15,11 @@ import std.memory;
 export namespace graal::packet
 {
 
+/*
+* 1: u: 0 to 233, 235 to 255
+*    s: -128 to -23, -21 to 127
+*/
+
 template <std::size_t N>
 constexpr std::array<uint8_t, N> WriteGraalByte(uint64_t data)
 {
@@ -59,6 +64,13 @@ constexpr std::array<uint8_t, N> WriteByte(uint64_t data)
 }
 
 template <std::size_t N>
+constexpr std::array<uint8_t, N> WriteGraalFloat(float data)
+{
+	uint64_t intermediate = static_cast<uint64_t>(data * 2.0f);
+	return WriteGraalByte<N>(intermediate);
+}
+
+template <std::size_t N>
 constexpr std::vector<uint8_t> WriteClassicString(const std::string& data)
 {
 	auto len = WriteGraalByte<N>(std::ranges::size(data));
@@ -98,8 +110,8 @@ public:
 		//static_assert(std::ranges::size(r) >= N, "ReadGraalByte input not big enough.");
 
 		output = 0;
-		auto b = std::begin(r);
-		auto e = std::end(r);
+		auto b = std::ranges::begin(r);
+		auto e = std::ranges::end(r);
 
 		for (auto i = 0; i < N - 1 && b != e; ++i)
 		{
@@ -149,8 +161,8 @@ public:
 		//static_assert(std::ranges::size(r) >= N, "ReadByte input not big enough.");
 
 		output = 0;
-		auto b = std::begin(r);
-		auto e = std::end(r);
+		auto b = std::ranges::begin(r);
+		auto e = std::ranges::end(r);
 
 		for (auto i = 0; i < N - 1 && b != e; ++i)
 		{
@@ -175,6 +187,40 @@ constexpr auto ReadByte(auto& out)
 }
 
 
+template <const std::size_t N, std::floating_point T>
+struct ReadGraalFloat_t
+{
+private:
+	T& output;
+
+public:
+	ReadGraalFloat_t() = delete;
+	constexpr ReadGraalFloat_t(T& out) : output(out)
+	{
+		static_assert(sizeof(out) >= N, "ReadGraalFloat output is not large enough.");
+	}
+
+	template <std::size_t N>
+	constexpr std::ranges::view auto operator()(std::ranges::view auto&& r) const
+	{
+		size_t intermediate = 0;
+
+		ReadGraalByte_t<N, size_t> convert{ intermediate };
+		auto range_result = convert.operator()<N>(std::forward<decltype(r)>(r));
+
+		output = static_cast<T>(intermediate) / 2.0f;
+
+		return range_result;
+	}
+};
+
+template <std::size_t N>
+constexpr auto ReadGraalFloat(auto& out)
+{
+	return ReadGraalFloat_t<N, std::remove_reference<decltype(out)>::type>(out);
+}
+
+
 template <const std::size_t N>
 struct ReadClassicString_t
 {
@@ -193,12 +239,14 @@ public:
 
 		if constexpr (N == 0)
 		{
-			auto b = std::begin(r);
-			auto e = std::end(r);
+			auto b = std::ranges::begin(r);
+			auto e = std::ranges::end(r);
 
 			output.clear();
 			output.insert(std::begin(output), b, e);
-			return e;
+
+			using T = std::decay_t<decltype(r)>;
+			return std::ranges::empty_view<T>{};
 		}
 		else
 		{
@@ -244,12 +292,14 @@ public:
 
 		if constexpr (N == 0)
 		{
-			auto b = std::begin(r);
-			auto e = std::end(r);
+			auto b = std::ranges::begin(r);
+			auto e = std::ranges::end(r);
 
 			output.clear();
 			output.insert(std::begin(output), b, e);
-			return e;
+
+			using T = std::decay_t<decltype(r)>;
+			return std::ranges::empty_view<T>{};
 		}
 		else
 		{
@@ -312,6 +362,21 @@ constexpr auto operator>> (std::ranges::view auto&& r, const graal::packet::Read
 {
 	return out.operator()<N>(std::forward<decltype(r)>(r));
 }
+
+
+
+export template <std::size_t N, std::floating_point T>
+constexpr auto operator>> (std::ranges::range auto&& r, const graal::packet::ReadGraalFloat_t<N, T>& out)
+{
+	return out.operator()<N>(std::views::all(r));
+}
+
+export template <std::size_t N, std::floating_point T>
+constexpr auto operator>> (std::ranges::view auto&& r, const graal::packet::ReadGraalFloat_t<N, T>& out)
+{
+	return out.operator()<N>(std::forward<decltype(r)>(r));
+}
+
 
 
 export template <std::size_t N>

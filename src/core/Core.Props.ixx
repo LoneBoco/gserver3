@@ -352,15 +352,20 @@ public:
 		: m_id(group.m_id), m_properties(std::move(group.m_properties)), ImportFunction(group.ImportFunction), ExportFunction(group.ExportFunction)
 	{}
 
-	PropertyGroup(uint16_t id, Property prop, PropertyImportFunction f_import, PropertyExportFunction f_export)
+	PropertyGroup(uint16_t id, PropertyType type, PropertyImportFunction f_import, PropertyExportFunction f_export)
 		: m_id(id), ImportFunction(f_import), ExportFunction(f_export)
 	{
-		m_properties.push_back(prop);
+		m_properties.push_back(Property{ type });
 	}
 
-	PropertyGroup(uint16_t id, std::initializer_list<Property> props, PropertyImportFunction f_import, PropertyExportFunction f_export)
-		: m_id(id), m_properties(props), ImportFunction(f_import), ExportFunction(f_export)
-	{}
+	PropertyGroup(uint16_t id, std::initializer_list<PropertyType> types, PropertyImportFunction f_import, PropertyExportFunction f_export)
+		: m_id(id), ImportFunction(f_import), ExportFunction(f_export)
+	{
+		for (auto type : types)
+		{
+			m_properties.push_back(Property{ type });
+		}
+	}
 
 	PropertyGroup& operator=(const PropertyGroup& other)
 	{

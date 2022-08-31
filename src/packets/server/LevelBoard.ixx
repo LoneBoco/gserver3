@@ -13,7 +13,7 @@ export namespace graal::packet::server
 {
 
 // [UBYTE5 modtime][SBYTE1 x (float)][SBYTE1 y (float)][STRING level]
-class LevelBoard : protected Packet
+class LevelBoard : protected packet::Packet
 {
 public:
 	LevelBoard()
@@ -27,7 +27,7 @@ public:
 	~LevelBoard() override {}
 
 public:
-	std::variant<graal::packet::ClientPacket, graal::packet::ServerPacket> Type() const override
+	packet::PacketType Type() const override
 	{
 		return graal::packet::ServerPacket::LEVELBOARD;
 	}

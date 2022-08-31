@@ -51,7 +51,6 @@ public:
 			using T = std::decay_t<decltype(type)>;
 			if constexpr (std::is_same_v<T, graal::packet::ClientPacket>)
 			{
-				//Log::PrintLine("** Packet being sent to the client is not a server packet!");
 				return;
 			}
 			else if constexpr (std::is_same_v<T, graal::packet::ServerPacket>)
