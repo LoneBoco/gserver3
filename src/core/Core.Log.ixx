@@ -18,6 +18,12 @@ export module graal.core:log;
 //import std.filesystem;
 
 
+namespace graal::internal
+{
+constinit auto spaces = "                                                  ";
+}
+
+
 export namespace graal
 {
 
@@ -71,16 +77,14 @@ public:
 	{
 		if constexpr (N == 0)
 		{
-			std::array<char, 1> result = { '\0' };
-			return std::string_view{ result.data() };
+			return std::string_view{ "" };
 		}
 		else
 		{
-			constexpr uint32_t size = 4 + (N * 2) + 1;
-			std::array<char, size> result;
-			result.fill(' ');
-			result.back() = '\0';
-			return std::string_view{ result.data() };
+			constexpr size_t size = 4 + (N * 2) + 1;
+			static_assert(size <= 50, "Indent called with over 50 characters!");
+
+			return std::string_view{ internal::spaces, size};
 		}
 	}
 
