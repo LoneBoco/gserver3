@@ -22,6 +22,9 @@ using namespace boost;
 export namespace graal::network
 {
 
+template <class> inline constexpr bool always_false_v = false;
+
+
 class NetworkEndpoint
 {
 public:
@@ -46,6 +49,7 @@ public:
 public:
 	void Send(std::unique_ptr<graal::packet::Packet>&& packet)
 	{
+		const auto& packet_type = packet->Type();
 		std::visit([this, &packet](auto&& type)
 		{
 			using T = std::decay_t<decltype(type)>;
@@ -69,9 +73,9 @@ public:
 			}
 			else
 			{
-				static_assert(std::false_type, "NetworkEndpoint::Send - Unable to handle packet.");
+				static_assert(always_false_v<T>, "NetworkEndpoint::Send - Unable to handle packet.");
 			}
-		}, packet->Type());
+		}, packet_type);
 	}
 
 protected:
